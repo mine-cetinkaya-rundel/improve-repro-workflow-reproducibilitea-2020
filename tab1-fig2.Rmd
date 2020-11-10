@@ -106,7 +106,7 @@ p3 <- ggplot(penguins, aes(x = body_mass_g, fill = species)) +
 
 # googlesheets
 
-Go to <https://forms.gle/EoUJQALNFeZkRgex8> and fill out the form.
+Go to <https://bit.ly/repro-workflow-form> and fill out the form.
 
 ```{r}
 survey_data <- read_sheet("https://docs.google.com/spreadsheets/d/1_fEIeqCYhaVPYAM4eHiI4gvAaTz6BTQYvV65XP5FGMU/edit?usp=sharing")
