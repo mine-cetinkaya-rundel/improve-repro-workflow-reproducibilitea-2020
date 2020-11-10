@@ -1,0 +1,57 @@
+---
+title: "Title of manuscript"
+
+# to produce blinded version set to 1
+blinded: 0
+
+authors:
+- name: Mine \c{C}etinkaya-Rundel ^[mcetinka@ed.ac.uk]
+  affiliation: |
+    | School of Mathematics, University of Edinburgh, RStudio,
+    | and Department of Statistical Science, Duke University
+  email: mcetinka@ed.ac.uk
+- name: Another Author ^[another@some.uni.edu]
+  affiliation: A Department
+  email: another@some.uni.edu
+keywords: |
+  data science, reproducibility
+
+abstract: >
+  This is my really good abstract.
+
+editor_options:
+  wrap: sentence
+  canonical: true
+bibliography: references.bib
+output:
+  rticles::asa_article:
+    keep_tex: yes
+    includes:
+      in_header: header.tex
+---
+
+```{r knitr_options, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE, out.width = "100%")
+library(readxl)
+```
+
+# Introduction
+
+Here is an intro for a study done at \school{}.
+
+# A really good section
+
+Oh yeah!
+[@cetinkaya-rundel2018]
+
+# An even better section
+
+Yaaaasss!
+
+# Discussion
+
+So many challenges and opportunities...
+
+\newpage
+
+# References {.unnumbered}
