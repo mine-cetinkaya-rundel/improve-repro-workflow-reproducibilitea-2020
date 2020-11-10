@@ -109,14 +109,8 @@ p3 <- ggplot(penguins, aes(x = body_mass_g, fill = species)) +
 Go to <https://bit.ly/repro-workflow-form> and fill out the form.
 
 ```{r}
-survey_data <- read_sheet("https://docs.google.com/spreadsheets/d/1_fEIeqCYhaVPYAM4eHiI4gvAaTz6BTQYvV65XP5FGMU/edit?usp=sharing")
-names(survey_data) <- c("timestamp", "who", "coffee", "more")
-
-ggplot(survey_data, aes(y = who)) +
-  geom_bar()
-
-ggplot(survey_data, aes(x = coffee)) +
-  geom_histogram(binwidth = 1)
+survey_data <- read_sheet("https://docs.google.com/spreadsheets/d/1ajIUqCdfrLOoJynfrgKk7a6KEk-pL29Q7BQePqbUzh4/edit#gid=1135084610")
+names(survey_data) <- c("timestamp", "more")
 
 ggplot(survey_data, aes(x = more)) +
   geom_bar()
