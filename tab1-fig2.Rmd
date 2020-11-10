@@ -1,0 +1,105 @@
+---
+title: "Table 1 matches Figure 2!"
+author: "Mine Çetinkaya-Rundel"
+date: "`r Sys.Date()`"
+output: 
+  bookdown::html_document2:
+    fig_caption: yes
+bibliography: references.bib
+---
+
+```{r chunk-options, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE, 
+  message = FALSE,
+  out.width = "80%", 
+  fig.width = 6, 
+  fig.asp = 0.618
+  )
+```
+
+```{r setup}
+library(broom)           # for tidy model output
+library(glue)            # for gluing strings to data
+library(knitr)           # for kable
+library(palmerpenguins)  # for data
+library(patchwork)       # for laying out multiple plots
+library(tidyverse)       # for data wrangling and visualisation
+```
+
+In this report we evaluate the relationship between relationship between bill depth and flipper length of penguins.
+The data come from @gorman2014.
+
+[![Penguin bill dimensions](https://allisonhorst.github.io/palmerpenguins/reference/figures/culmen_depth.png "Penguin bill dimensions"){style="align: right" width="500"}](https://allisonhorst.github.io/palmerpenguins/)
+
+```{r}
+penguins_nongentoo <- penguins %>%
+  filter(species != "Gentoo")
+```
+
+The original dataset has `r penguins$species %>% unique() %>% length()` species (`r glue_collapse(penguins$species %>% unique(), sep = ", ", last = ", and ")`), but we will only work with `r glue_collapse(penguins_nongentoo$species %>% unique(), sep = " and ")` species.
+
+# Exploratory data analysis
+
+Table \@ref(tab:summary-stats) shows some summary statistics.
+
+```{r summary-stats}
+penguins %>%
+  group_by(species) %>%
+  summarise(
+    mean_bill_length_mm = mean(bill_length_mm, na.rm = TRUE), 
+    mean_bill_depth_mm = mean(bill_depth_mm, na.rm = TRUE), 
+    mean_flipper_length_mm = mean(flipper_length_mm, na.rm = TRUE), 
+    mean_body_mass_g = mean(body_mass_g, na.rm = TRUE) 
+  ) %>%
+  kable(caption = "Summary statistics")
+```
+
+# Model
+
+The model results are in Table \@ref(tab:model).
+
+```{r model}
+m_bl_fl <- lm(bill_depth_mm ~ flipper_length_mm, data = penguins_nongentoo)
+tidy_m_bl_fl <- tidy(m_bl_fl)
+kable(tidy_m_bl_fl, 
+      caption = "Regression output for predicting bill depth from flipper length.", 
+      digits = 2)
+```
+
+The slope of the regression model is `r tidy_m_bl_fl %>% filter(term == "flipper_length_mm") %>% pull(estimate) %>% round(2)`.
+
+# Visualize
+
+Figure \@ref(fig:scatterplot) shows the relationship between these variables, and we observe a positive slope in this visualization as well.
+
+```{r scatterplot, fig.cap = "Relationship between bill depth and flipper length.", warning = FALSE}
+ggplot(penguins_nongentoo) +
+  geom_point(aes(x = flipper_length_mm, y = bill_depth_mm, color = species)) +
+  geom_smooth(aes(x = flipper_length_mm, y = bill_depth_mm), method = "lm") 
+```
+
+Multiple plots in Figure \@ref(fig:multi-plot).
+
+```{r multi-plot, fig.asp = 0.8, out.width = "100%", fig.cap = "Lots of plots", warning = FALSE}
+p1 <- ggplot(penguins, aes(x = bill_length_mm, y = bill_depth_mm, color = species)) +
+  geom_point()
+
+p2 <- ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g, color = species)) +
+  geom_point()
+
+p3 <- ggplot(penguins, aes(x = body_mass_g, fill = species)) +
+  geom_histogram(alpha = 0.5) +
+  guides(fill = FALSE)
+
+(p1 + p2) / p3 +
+  plot_annotation(
+    tag_levels = "A",
+    title = "The surprising truth about penguins",
+    subtitle = "These 3 plots will reveal yet-untold secrets about our beloved data-set",
+    caption = "Disclaimer: None of these plots are insightful"
+    ) + 
+  plot_layout(guides = "collect") & theme(legend.position = "bottom")
+```
+
+# References
