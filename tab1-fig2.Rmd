@@ -27,6 +27,9 @@ library(patchwork)       # for laying out multiple plots
 library(tidyverse)       # for data wrangling and visualisation
 ```
 
+In this report we evaluate the relationship between relationship between bill depth and flipper length of penguins.
+The data come from @gorman2014.
+
 [![Penguin bill dimensions](https://allisonhorst.github.io/palmerpenguins/reference/figures/culmen_depth.png "Penguin bill dimensions"){style="align: right" width="500"}](https://allisonhorst.github.io/palmerpenguins/)
 
 ```{r}
