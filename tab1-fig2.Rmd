@@ -21,6 +21,7 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(broom)           # for tidy model output
 library(glue)            # for gluing strings to data
+library(googlesheets4)   # for reading data from googlesheets
 library(knitr)           # for kable
 library(palmerpenguins)  # for data
 library(patchwork)       # for laying out multiple plots
@@ -100,6 +101,24 @@ p3 <- ggplot(penguins, aes(x = body_mass_g, fill = species)) +
     caption = "Disclaimer: None of these plots are insightful"
     ) + 
   plot_layout(guides = "collect") & theme(legend.position = "bottom")
+```
+
+# googlesheets
+
+Go to <https://forms.gle/EoUJQALNFeZkRgex8> and fill out the form.
+
+```{r}
+survey_data <- read_sheet("https://docs.google.com/spreadsheets/d/1_fEIeqCYhaVPYAM4eHiI4gvAaTz6BTQYvV65XP5FGMU/edit?usp=sharing")
+names(survey_data) <- c("timestamp", "who", "coffee", "more")
+
+ggplot(survey_data, aes(y = who)) +
+  geom_bar()
+
+ggplot(survey_data, aes(x = coffee)) +
+  geom_histogram(binwidth = 1)
+
+ggplot(survey_data, aes(x = more)) +
+  geom_bar()
 ```
 
 # References
